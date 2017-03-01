@@ -15,7 +15,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondClass" android:label="Second Activity" />
+        <activity
+            android:name=".SecondClass"
+            android:label="Second Activity" />
+        <activity
+            android:name=".GrqphicsClass"
+            android:label="Graphics Activity" />
+        <activity android:name=".Preferences" />
+        <activity android:name=".Activity_List"></activity>
     </application>
 
 </manifest>

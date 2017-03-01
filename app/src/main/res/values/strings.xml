@@ -1,4 +1,12 @@
 <resources>
     <string name="app_name">MyFirstProject</string>
     <string name="HelloWorld">Hello World!</string>
+
+    <string-array name="Week">
+        <item>quentin</item>
+        <item>Florian</item>
+        <item>Jerome</item>
+        <item>Valentin</item>
+    </string-array>
+
 </resources>

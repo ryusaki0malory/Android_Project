@@ -1,18 +1,23 @@
 package com.example.fbarillot.myfirstproject;
 
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
+import android.net.Uri;
+import android.preference.PreferenceManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -36,13 +41,12 @@ public class MainActivity extends AppCompatActivity{
         this.relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
         this.toggleButton = (ToggleButton) findViewById(R.id.toggleButton);
 
-        Fragment fragmentA = new FragmentA();
-//        FragmentManager fragmentManager = getFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.add(R.id.activity_main,fragmentA, "MyFragment");
-//        fragmentTransaction.commit();
-        getFragmentManager().beginTransaction().add(R.id.activity_main, fragmentA, "MyFragment").commit();
-
+        SharedPreferences preferences = getSharedPreferences("Pref", MODE_PRIVATE);
+        textView.setText(preferences.getString("usernam", ""));
+//        Fragment fragmentA = new FragmentA();
+//        getFragmentManager().beginTransaction().add(R.id.activity_main, fragmentA, "MyFragment").commit();
+        Button button = (Button) findViewById(R.id.button);
+        registerForContextMenu(button);
 
         this.toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -54,7 +58,6 @@ public class MainActivity extends AppCompatActivity{
                 }
             }
         });
-
 
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -74,9 +77,40 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if (v.getId() == R.id.button) {
+            getMenuInflater().inflate(R.menu.main_menu, menu);
+        }
+    }
 
     public void Try(View view) {
-        Toast.makeText(this, textView.getText().toString(),Toast.LENGTH_LONG).show();
+        AlertDialog.Builder builder= new AlertDialog.Builder(this);
+        builder.setTitle("Alert Dialog");
+        builder.setMessage("Do you want");
+        builder.setCancelable(false);
+        builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                MainActivity.this.finish();
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.cancel();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+        SharedPreferences preferences = getSharedPreferences("Pref", MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString("usernam", "pomme");
+        editor.commit();
+//        Intent intent = new Intent(this, GrqphicsClass.class);
+//        startActivity(intent);
     }
 
     public void GoToSecond(View view) {
@@ -91,5 +125,77 @@ public class MainActivity extends AppCompatActivity{
         if (requestCode == 123) {
            Toast.makeText(this, data.getStringExtra("DataBack"),Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_setting: {
+
+                break;
+            }
+            case R.id.action_second: {
+
+                break;
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void progressButton(View view) {
+
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+        progressDialog.setMessage("I'm working");
+        progressDialog.setIndeterminate(true);
+        progressDialog.setCancelable(true);
+        progressDialog.show();
+        progressDialog.setProgress(30);
+    }
+
+    public void SettingsON(View view) {
+        Intent intent = new Intent(this, Preferences.class);
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
+        if (settings.getBoolean("red", false)){
+            this.relativeLayout.setBackgroundColor(Color.RED);
+        }
+        if (settings.getBoolean("blue", false)){
+            this.relativeLayout.setBackgroundColor(Color.BLUE);
+        }
+        if (settings.getBoolean("green", false)){
+            this.relativeLayout.setBackgroundColor(Color.GREEN);
+        }
+    }
+
+    public void GoToWeb(View view) {
+        SQLiteDatabase db = openOrCreateDatabase("MyDB", MODE_PRIVATE, null);
+
+        db.execSQL("CREATE TABLE IF NOT EXISTS Person (LastName TEXT, FIrstName TEXT)");
+        db.execSQL("INSERT INTO Person VALUES ('POMME', 'table'");
+        db.close();
+
+        db = openOrCreateDatabase("MyDB", MODE_PRIVATE, null);
+        Cursor cursor = db.rawQuery("SELECT * FROM Person", null);
+        cursor.moveToFirst();
+        int Ci = cursor.getColumnIndex("LastName");
+        db.close();
+
+        String url = "https://translate.google.com/?hl=fr#auto/en/florian";
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(url));
+        startActivity(i);
     }
 }

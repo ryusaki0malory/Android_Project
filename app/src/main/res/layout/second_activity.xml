@@ -15,15 +15,31 @@
         android:hint="@string/HelloWorld"
         android:layout_alignParentEnd="true" />
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/button3"
+        android:id="@+id/listView"
+        android:layout_alignParentStart="true" />
+
     <Button
         android:text="Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="127dp"
-        android:layout_marginTop="66dp"
+        android:layout_marginStart="38dp"
         android:onClick="SendDataBack"
-        android:id="@+id/button3" />
+        android:id="@+id/button3"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="next view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentEnd="true"
+        android:onClick="goToSegond"
+        android:layout_marginEnd="78dp"
+        android:id="@+id/button8" />
 
 </RelativeLayout>

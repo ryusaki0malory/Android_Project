@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@color/colorAccent"
+    android:background="@color/colorPrimary"
     tools:context="com.example.fbarillot.myfirstproject.MainActivity">
 
     <SeekBar
@@ -54,5 +54,34 @@
         android:layout_above="@+id/toggleButton"
         android:layout_alignStart="@+id/toggleButton"
         android:onClick="GoToSecond" />
+
+    <Button
+        android:text="Sablier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button"
+        android:layout_alignEnd="@+id/toggleButton"
+        android:layout_marginTop="57dp"
+        android:onClick="progressButton"
+        android:id="@+id/button4" />
+
+    <Button
+        android:text="Settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/button4"
+        android:layout_alignEnd="@+id/button"
+        android:layout_marginTop="21dp"
+        android:onClick="SettingsON"
+        android:id="@+id/button6" />
+
+    <Button
+        android:text="Test Web"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button7"
+        android:onClick="GoToWeb"
+        android:layout_below="@+id/button6"
+        android:layout_alignStart="@+id/button6" />
 
 </RelativeLayout>
